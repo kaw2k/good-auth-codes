@@ -1,35 +1,39 @@
 <main>
-    <div id="auth">
-        <form>
-            <p>To get your fortune, please authenticate first:</p>
-            <input placeholder="Only good auth codes allowed" />
-            <button>what is my fortune?</button>
-            <p class="error"></p>
-        </form>
+    <div id="auth" class="">
+        <p>To get your fortune, please authenticate first:</p>
+        <input placeholder="xxx xxx" />
+        <button type="button" id="submit">what is my fortune?</button>
+        <p id="error" class="hidden"></p>
     </div>
-    <div id="results">
+    <div id="results"
+         class="hidden">
         <p>Your fortune is...</p>
         <p id="fortune"></p>
+        <button id="restart">get another fortune</button>
     </div>
 </main>
 
-
-
-
-
 <script>
+    var authContainer = document.getElementById('auth')
+    var resultsContainer = document.getElementById('results')
+    var fortuneMessage = document.getElementById('fortune')
+    var errorMessage = document.getElementById('error')
+    var restartButton = document.getElementById('restart')
+    var submitButton = document.getElementById('submit')
+
+    var tolerance = .99
 
     var fortunes = [
-        "It is Certain.",
-        "It is decidedly so.",
-        "Without a doubt.",
-        "Yes definitely.",
-        "You may rely on it.",
-        "As I see it, yes.",
+        // "It is Certain.",
+        // "It is decidedly so.",
+        // "Without a doubt.",
+        // "Yes definitely.",
+        // "You may rely on it.",
+        // "As I see it, yes.",
         "Most likely.",
-        "Outlook good.",
-        "Yes.",
-        "Signs point to yes.",
+        // "Outlook good.",
+        // "Yes.",
+        // "Signs point to yes.",
         "Reply hazy, try again.",
         "Ask again later.",
         "Better not tell you now.",
@@ -43,12 +47,36 @@
     ]
 
     var goodAuthcodeMessage = ''
-    var badAuthcodeMessages = []
+    var badAuthcodeMessages = ['one', 'two']
 
-    function validateAuthcode(e) {}
-    function getFortune(e) {}
+    function hide($node) { $node.classList.add('hidden') }
+    function show($node) { $node.classList.remove('hidden') }
+    function getRandom(list) { return list[Math.floor(Math.random() * list.length)] }
+
+    function validateAuthcode() {
+        if (Math.random() > tolerance) {
+            fortuneMessage.innerText = getRandom(fortunes)
+            hide(authContainer)
+            hide(errorMessage)
+            show(resultsContainer)
+        } else {
+            errorMessage.innerText = getRandom(badAuthcodeMessages)
+            show(errorMessage)
+        }
+    }
+
+    function restart() {
+        hide(resultsContainer)
+        hide(errorMessage)
+        show(authContainer)
+    }
+
+    submitButton.addEventListener('click', validateAuthcode)
+    restartButton.addEventListener('click', restart)
 </script>
 
 <style>
-
+    .hidden {
+        display: none;
+    }
 </style>
